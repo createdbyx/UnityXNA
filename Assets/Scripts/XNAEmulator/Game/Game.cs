@@ -8,21 +8,21 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Microsoft.Xna.Framework
 {
     public class Game : IDisposable
-	{
-		private GameComponentCollection _components;
+    {
+        private GameComponentCollection _components;
         Content.ContentManager content;
-		GraphicsDevice graphicsDevice;
-		DrawQueue drawQueue;
+        GraphicsDevice graphicsDevice;
+        DrawQueue drawQueue;
         long totalTicks = 0;
 
-		public DrawQueue DrawQueue {
-			get {
-				return this.drawQueue;
-			}
-			set {
-				drawQueue = value;
-			}
-		}
+        public DrawQueue DrawQueue {
+            get {
+                return this.drawQueue;
+            }
+            set {
+                drawQueue = value;
+            }
+        }
         public ContentManager Content
         {
             get { return this.content; }
@@ -33,31 +33,31 @@ namespace Microsoft.Xna.Framework
         {
             get
             {
-				if(graphicsDevice == null)
-					graphicsDevice = new GraphicsDevice(DrawQueue);
-				
-				return graphicsDevice;
+                if(graphicsDevice == null)
+                    graphicsDevice = new GraphicsDevice(DrawQueue);
+                
+                return graphicsDevice;
             }
         }
 
         public Game()
         {
             content = new ContentManager(null, "");
-			
-			_components = new GameComponentCollection();	
+            
+            _components = new GameComponentCollection();	
         }
 
         protected virtual void Update(GameTime gameTime)
         {  
         }
-		
-		public GameComponentCollection Components
-		{
-			get
-			{
-				return this._components;
-			}
-		}
+        
+        public GameComponentCollection Components
+        {
+            get
+            {
+                return this._components;
+            }
+        }
 
         protected virtual void Draw(GameTime gameTime)
         {
@@ -105,15 +105,15 @@ namespace Microsoft.Xna.Framework
         internal void Begin()
         {
             LoadContent();
-			// XNA's first update call has a zero elapsed time, so do one now.
-			GameTime gameTime = new GameTime(new TimeSpan(0), new TimeSpan(0), new TimeSpan(0, 0, 0, 0, 0), new TimeSpan(0, 0, 0, 0, 0));
-			Update(gameTime);
+            // XNA's first update call has a zero elapsed time, so do one now.
+            GameTime gameTime = new GameTime(new TimeSpan(0), new TimeSpan(0), new TimeSpan(0, 0, 0, 0, 0), new TimeSpan(0, 0, 0, 0, 0));
+            Update(gameTime);
         }
 
         internal void Tick(float deltaTime)
         {
             long microseconds = (int)(deltaTime * 1000000);
-			long ticks = microseconds * 10;
+            long ticks = microseconds * 10;
             totalTicks += ticks;
             GameTime gameTime = new GameTime(new TimeSpan(0), new TimeSpan(0), new TimeSpan(totalTicks), new TimeSpan(ticks));
             Update(gameTime);
