@@ -1,9 +1,5 @@
 ﻿namespace Codefarts.UnityXna
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
@@ -13,6 +9,33 @@
         private string value;
         private Vector2 position;
         private Vector4 color;
+        private float rotation;
+        private Vector2 origin;
+        private Vector2 scale = Vector2.One;
+
+        public Vector2 Origin
+        {
+            get
+            {
+                return this.origin;
+            }
+        }
+
+        public Vector2 Scale
+        {
+            get
+            {
+                return this.scale;
+            }
+        }
+
+        public float Rotation
+        {
+            get
+            {
+                return this.rotation;
+            }
+        }
 
         public SpriteFont Font
         {
@@ -45,6 +68,7 @@
                 return this.color;
             }
         }
+
         public DrawStringCall(SpriteFont font, string value, Vector2 position, Vector4 color)
         {
             this.font = font;
@@ -53,5 +77,15 @@
             this.color = color;
         }
 
-    } 
+        public DrawStringCall(SpriteFont spriteFont, string value, Vector2 position, Vector4 color, float rotation, Vector2 origin, Vector2 scale)
+        {
+            this.font = spriteFont;
+            this.value = value;
+            this.position = position;
+            this.color = color;
+            this.rotation = rotation;
+            this.origin = origin;
+            this.scale = scale;
+        }
+    }
 }

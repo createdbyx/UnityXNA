@@ -1,5 +1,9 @@
 namespace Codefarts.UnityXna
 {
+    using System;
+
+    using WindowsGSM1;
+
     using Microsoft.Xna.Framework;
 
     using Platformer;
@@ -41,7 +45,7 @@ namespace Codefarts.UnityXna
         /// <summary>
         /// The game.
         /// </summary>
-        private PlatformerGame game;
+        private Game game;
 
         /// <summary>
         /// The timeleft.
@@ -49,6 +53,14 @@ namespace Codefarts.UnityXna
         private float timeleft; // Left time for current interval
 
         public bool showFps;
+
+        public enum GameTest
+        {
+            Platformer,
+            GameScreenManager
+        }
+
+        public GameTest GameToTest = GameTest.Platformer;
 
         #endregion
 
@@ -105,8 +117,22 @@ namespace Codefarts.UnityXna
 
                 GUI.color = new Color(call.Color.X, call.Color.Y, call.Color.Z, call.Color.W);
 
-                var size = GUI.skin.label.CalcSize(new GUIContent(call.Value));
-                GUI.Label(new Rect(call.Position.X, call.Position.Y, size.x, size.y), call.Value);
+                var style = GUI.skin.label;
+                //  style.font = new Font(call.Font.FontName);
+                style.fontSize = (int)call.Font.Size;
+                var size = call.Font.MeasureString(call.Value); // style.CalcSize(new GUIContent(call.Value));
+
+                var matrix = GUI.matrix;
+                //  GUI.matrix = Matrix4x4.TRS(call.Origin, UnityEngine.Quaternion.Euler(0, 0, call.Rotation), new UnityEngine.Vector3(call.Scale.X, call.Scale.Y, 1));
+                GUI.matrix = Matrix4x4.TRS(UnityEngine.Vector3.zero, UnityEngine.Quaternion.Euler(0, 0, call.Rotation), new UnityEngine.Vector3(call.Scale.X, call.Scale.Y, 1));
+
+                size.X += (size.X * call.Scale.X) - size.X;
+                size.Y = call.Font.LineSpacing * call.Scale.Y;// (size.Y * call.Scale.Y) - size.Y;
+                var left = call.Position.X - call.Origin.X;
+                var top = call.Position.Y - call.Origin.Y;
+                GUI.Label(new Rect(left, top, size.X, size.Y), call.Value, style);
+
+                GUI.matrix = matrix;
             }
 
             if (this.showFps)
@@ -126,7 +152,17 @@ namespace Codefarts.UnityXna
             Microsoft.Xna.Framework.Media.MediaPlayer.AudioSource = this.gameObject.AddComponent<AudioSource>();
 
             this.drawQueue = new DrawQueue();
-            this.game = new PlatformerGame();
+            switch (this.GameToTest)
+            {
+                case GameTest.Platformer:
+                    this.game = new PlatformerGame();
+                    break;
+
+                case GameTest.GameScreenManager:
+                    this.game = new GameStateManagementGame();
+                    break;
+            }
+
             this.game.DrawQueue = this.drawQueue;
             this.game.Begin();
             this.timeleft = this.updateInterval;
@@ -151,7 +187,7 @@ namespace Codefarts.UnityXna
 
             this.timeleft -= Time.deltaTime;
             this.accum += Time.timeScale / Time.deltaTime;
-            ++this.frames;
+            this.frames++;
 
             // Interval ended - update GUI text and start new interval
             if (this.timeleft <= 0.0)

@@ -1,0 +1,7 @@
+﻿XNA_InvalidDisplayOrientation The specified DisplayOrientation is invalid.
+XNA_GesturesNotEnabled This operation cannot be completed until TouchPanel.EnabledGestures is assigned.
+XNA_GesturesNotAvailable No gestures are available at this time.  TouchPanel.ReadGesture should only be called when TouchPanel.IsGestureAvailable is true.
+XNA_BackBufferDimMustBePositive BackBufferWidth and BackBufferHeight must be greater than zero.
+XNA_BeginMustBeCalledBeforeEnd Begin must be called successfully before End can be called.
+XNA_BeginMustBeCalledBeforeDraw Begin must be called successfully before a Draw can be called.
+XNA_EndMustBeCalledBeforeBegin Begin cannot be called again until End has been successfully called.
